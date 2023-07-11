@@ -58,24 +58,48 @@ values
 	(default, 3, 1, "2021-09-25", 2),
 	(default, 1, 5, "2023-10-31", 7);
 
+#Seleccione las 3 operaciones con mejor evaluación.
 SELECT * 
 FROM registros
 order by evaluacion desc
 limit 3;
 
+#Seleccione las 3 operaciones con menos evaluación.
 SELECT *
 FROM registros
 order by evaluacion
 limit 3;
 
+#Seleccione al operario que más soportes ha realizado.
 SELECT id_operario, nombre, apellido, COUNT(*) AS numero_operaciones FROM registros 
 JOIN operario ON operario.id = registros.id_operario
 group by id_operario
 order by numero_operaciones desc
 limit 1;
 
+#Seleccione al cliente que menos veces ha utilizado la aplicación.
 SELECT id_usuario, nombre, apellido, COUNT(*) AS numero_consultas FROM registros
 JOIN usuario ON usuario.id = registros.id_usuario
 group by id_usuario
 order by numero_consultas asc
 limit 1;
+
+#Agregue 10 años a los tres primeros usuarios registrados.
+update usuario
+set edad = edad + 10
+where id=1 or id=2 or id=3;
+
+#Renombre todas las columnas ‘correo electrónico’. El nuevo nombre debe ser email.
+alter table usuario
+rename column correo_electronico to email;
+
+alter table operario
+rename column correo_electronico to email;
+
+#Seleccione solo los operarios mayores de 20 años. (se bajo la edad de uno de los operarios)
+update operario
+set edad = edad -13
+where id=1;
+
+SELECT * from operario
+where edad >= 20;
